@@ -25,7 +25,7 @@ public class VehicleObjectBuilder {
             @Override
             public float chargingFueling(float howMuch) {
 
-                return howMuch;
+                return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
             }
         };
         Motorcycle motorFuel = new Motorcycle(ownerName, ownerPhone, modelName, licenseNumber, energyLeft, wheels,
@@ -50,8 +50,7 @@ public class VehicleObjectBuilder {
         Engine engine = new Engine(currentAmount, 2.4f, "electric car") {
             @Override
             public float chargingFueling(float howMuch) {
-
-                return howMuch;
+                return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
             }
         };
         Motorcycle motorElectric = new Motorcycle(ownerName, ownerPhone, modelName, licenseNumber, energyLeft, wheels,
@@ -77,7 +76,7 @@ public class VehicleObjectBuilder {
             @Override
             public float chargingFueling(float howMuch) {
 
-                return howMuch;
+                return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
             }
         };
         Car carFuel = new Car(ownerName, ownerPhone, modelName, licenseNumber, energyLeft, wheels, engine, carColour, numberOfDoors);
@@ -102,7 +101,7 @@ public class VehicleObjectBuilder {
             @Override
             public float chargingFueling(float howMuch) {
 
-                return howMuch;
+                return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
             }
         };
         Car carElectric = new Car(ownerName, ownerPhone, modelName, licenseNumber, energyLeft, wheels, engine, carColour, numberOfDoors);
@@ -127,7 +126,7 @@ public class VehicleObjectBuilder {
             @Override
             public float chargingFueling(float howMuch) {
 
-                return howMuch;
+                return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
             }
         };
         Truck truck = new Truck(ownerName, ownerPhone, modelName, licenseNumber, energyLeft, wheels, engine, isDangerous, maxPayload);

@@ -17,6 +17,6 @@ public class FuelEngine extends Engine {
      */
     public float chargingFueling(float howMuch) {
 
-        return Math.min(howMuch + getCurrentAmount(), getMaxAmount());
+        return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
     }
 }

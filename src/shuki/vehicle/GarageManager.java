@@ -35,6 +35,7 @@ public enum GarageManager {
             case 1:
                 vehicle.put(licenseNumber, objectBuilder.createFuelMotorcycle(licenseNumber, ownerName, ownerPhone,
                             modelName, manufactureName, energyLeft, currentAirPressure, currentAmount));
+                break;
             case 2:
                 vehicle.put(licenseNumber, objectBuilder.createElectricMotorcycle(licenseNumber, ownerName, ownerPhone,
                             modelName, manufactureName, energyLeft, currentAirPressure, currentAmount));
@@ -42,6 +43,7 @@ public enum GarageManager {
             case 3:
                 vehicle.put(licenseNumber, objectBuilder.createFuelCar(licenseNumber, ownerName, ownerPhone, modelName,
                             manufactureName, energyLeft, currentAirPressure, currentAmount));
+                break;
             case 4:
                 vehicle.put(licenseNumber, objectBuilder.createElectricCar(licenseNumber, ownerName, ownerPhone,
                             modelName, manufactureName, energyLeft, currentAirPressure, currentAmount));
@@ -156,18 +158,15 @@ public enum GarageManager {
         //TODO: why do you create a new engine instead of fuel engine of existing car
 
 
-
         try {
-            Engine engine = vehicle.get(licenseNumber).myEngine.getEngine(
-                                                       vehicle.get(licenseNumber).myEngine.getCurrentAmount(),
-                                                       vehicle.get(licenseNumber).myEngine.getMaxAmount(),
-                                                       vehicle.get(licenseNumber).myEngine.getTypeOfFuel());
+
 /*
             Engine engine = new FuelEngine(vehicle.get(licenseNumber).myEngine.getCurrentAmount(),
                     vehicle.get(licenseNumber).myEngine.getMaxAmount(),
                     vehicle.get(licenseNumber).myEngine.getTypeOfFuel());*/
 
             if (vehicle.containsKey(licenseNumber)) {
+                Engine engine = vehicle.get(licenseNumber).getEngine();
                 vehicle.get(licenseNumber).myEngine.setCurrentAmount(engine.chargingFueling(howMuch));
 
                 System.out.println("the vehicle type of fuel is: " + vehicle.get(licenseNumber).myEngine.getTypeOfFuel());
@@ -191,11 +190,14 @@ public enum GarageManager {
         //TODO: why do you create a new engine instead of fuel engine of existing car
 
         try {
-            Engine engine = new ElectricEngine(vehicle.get(licenseNumber).myEngine.getCurrentAmount(),
+
+
+/*            Engine engine = new ElectricEngine(vehicle.get(licenseNumber).myEngine.getCurrentAmount(),
                     vehicle.get(licenseNumber).myEngine.getMaxAmount(),
-                    vehicle.get(licenseNumber).myEngine.getTypeOfFuel());
+                    vehicle.get(licenseNumber).myEngine.getTypeOfFuel());*/
 
             if (vehicle.containsKey(licenseNumber)) {
+                Engine engine = vehicle.get(licenseNumber).getEngine();
                 vehicle.get(licenseNumber).myEngine.setCurrentAmount(engine.chargingFueling(howMuch));
                 System.out.println("the new amount left is " + vehicle.get(licenseNumber).myEngine.getCurrentAmount());
                 System.out.println();

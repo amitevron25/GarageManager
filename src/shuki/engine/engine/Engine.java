@@ -51,13 +51,6 @@ abstract public class Engine {
     public String getTypeOfFuel() {
         return (typeOfFuel);
     }
-
-    public Engine getEngine(float currentAmount, float maxAmount, String typeOfFuel){
-
-
-
-        return this;
-    }
     //endregion
 
     /** Display Engine properties

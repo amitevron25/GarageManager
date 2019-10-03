@@ -81,6 +81,10 @@ abstract public class Vehicle {
     public float getEnergyLeft() {
         return energyLeft;
     }
+
+    public Engine getEngine(){
+        return myEngine;
+    }
     //endregion
 
     /*
