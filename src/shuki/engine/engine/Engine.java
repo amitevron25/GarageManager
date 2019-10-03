@@ -28,6 +28,8 @@ abstract public class Engine {
      * @param currentAmount current amount of energy left in the vehicle
      */
     public void setCurrentAmount(float currentAmount) {
+        System.out.println("change");
+
         this.currentAmount = currentAmount;
     }
 

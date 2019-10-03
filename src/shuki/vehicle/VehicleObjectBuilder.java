@@ -24,6 +24,7 @@ public class VehicleObjectBuilder {
         Engine engine = new Engine(currentAmount, 7.2f, "Octan95") {
             @Override
             public float chargingFueling(float howMuch) {
+                System.out.println("change");
 
                 return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
             }
