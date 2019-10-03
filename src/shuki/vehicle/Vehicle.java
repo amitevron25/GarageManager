@@ -83,8 +83,6 @@ abstract public class Vehicle {
     }
 
     public Engine getEngine(){
-        System.out.println("change");
-
         return myEngine;
     }
     //endregion

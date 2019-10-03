@@ -33,8 +33,6 @@ public enum GarageManager {
 
         switch (typeOfVehicle) {
             case 1:
-                System.out.println("change");
-
                 vehicle.put(licenseNumber, objectBuilder.createFuelMotorcycle(licenseNumber, ownerName, ownerPhone,
                             modelName, manufactureName, energyLeft, currentAirPressure, currentAmount));
                 break;

@@ -16,7 +16,6 @@ public class ElectricEngine extends Engine {
      * @param howMuch indication of how much to fill
      */
     public float chargingFueling(float howMuch) {
-System.out.println("change");
         return Math.min(howMuch + getCurrentAmount(), getMaxAmount());
     }
 }
