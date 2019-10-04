@@ -1,6 +1,7 @@
 package shuki.vehicle;
 
 import shuki.engine.engine.Engine;
+import shuki.engine.fuelengine.FuelEngine;
 import shuki.typeofvehicles.car.Car;
 import shuki.typeofvehicles.motorcycle.Motorcycle;
 import shuki.typeofvehicles.truck.Truck;
@@ -15,18 +16,36 @@ public class VehicleObjectBuilder {
                                            String manufactureName, float energyLeft, float currentAirPressure, float currentAmount) {
         ArrayList<VehicleWheel> wheels = new ArrayList<>();
 
+        //TODO: This code should be in Garage.class.
+        //TODO: In this class we only create instances
+        ///===========================
         Scanner input = new Scanner(System.in);
         System.out.println("please enter license type");
         String licenseType = input.next();
         System.out.println("please enter motor volume");
         int motorVolume = input.nextInt();
+        //==============================
 
+        //TODO: Dude, what are you doing??? We spoke about Polymorpism many many times!
         Engine engine = new Engine(currentAmount, 7.2f, "Octan95") {
             @Override
             public float chargingFueling(float howMuch) {
                 return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
             }
         };
+
+        //TODO: You should do something like
+        Engine engine2 = new FuelEngine(currentAmount, 7.2f, "Octan95");
+
+
+
+
+        //TODO: It wrong order of creating a car
+        //You need:
+        //1. Create engine
+        //2. Create wheels
+        //3. Create vehicle with engine and wheels!
+
         Motorcycle motorFuel = new Motorcycle(ownerName, ownerPhone, modelName, licenseNumber, energyLeft, wheels,
                                               engine, licenseType, motorVolume);
         for (int i = 0; i < 2; i++) {

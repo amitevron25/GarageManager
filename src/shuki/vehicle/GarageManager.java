@@ -12,6 +12,7 @@ public enum GarageManager {
 
     INSTANCE;
 
+    //TODO: change name to vehicles instead of vehicle because it's list
     HashMap<String, Vehicle> vehicle = new HashMap<>();
 
     /**
@@ -61,6 +62,20 @@ public enum GarageManager {
      * output: prints to stdout license list with car status
      * @param howToFilter stores weather to filter or not
      */
+
+    //TODO: Why do you have howToSort and howToFilter???
+    //You should use only howToFilter
+    //HowToFilter should be from type ENUM (with name, for example, CarStatus)
+    //FOR EXAMPLE values of Enum:
+    //NONE, FIXING, PAID, FIXED
+
+    /*for (Map.Entry<String, Vehicle> mapElement : vehicle.entrySet()) {
+        CarStatus status = mapElement.getKey()).getCarStatus();
+        if (status == howToFilter) {
+            System.out.println(mapElement.getKey());
+        }
+    }*/
+
     public void showLicenseList(int howToFilter, int howToSort) {
 
         if (1 == howToFilter) {
@@ -97,6 +112,15 @@ public enum GarageManager {
         } catch (NullPointerException e) {
             System.out.println("the license number is not in the pool and will not be changed - try again");
         }
+
+        //TODO: More elegant code is:
+        Vehicle vehicleObj = vehicle.get(licenseNumber);
+        if (vehicleObj == null) {
+            System.out.println("the license number is not in the pool and will not be changed - try again");
+        } else {
+            vehicleObj.setCarStatus(newStatus);
+        }
+        //TODO: use it in all functions
     }
 
     /**
@@ -107,13 +131,34 @@ public enum GarageManager {
      */
     public void setsAirPressureMax(String licenseNumber, int whichWheel) {
         try {
+            //TODO: OHHH... BALAGAN! TO many .get.get.get
+
             float maxIs = vehicle.get(licenseNumber).myWheels.get(whichWheel).getMaxAirPressure();
             vehicle.get(licenseNumber).myWheels.get(whichWheel).setCurrentAirPressure(
                     vehicle.get(licenseNumber).myWheels.get(whichWheel).addedAirPressure(maxIs));
             System.out.println("the new air pressure is " + vehicle.get(licenseNumber).myWheels.get(whichWheel).getCurrentAirPressure());
+
+
+
+
+
         } catch (NullPointerException e){
             System.out.println("the license number is not in the pool and will not be changed - try again");
         }
+
+        //TODO: see my code:
+        Vehicle vehicleObj = vehicle.get(licenseNumber);
+        if (vehicleObj == null) {
+            System.out.println("the license number is not in the pool and will not be changed - try again");
+            return;
+        }
+
+        for (VehicleWheel wheel : vehicleObj.myWheels) {
+            wheel.addedAirPressure(wheel.getMaxAirPressure());
+            System.out.println("the new air pressure is " + wheel.getCurrentAirPressure());
+        }
+
+        //TODO: use it in all functions
     }
 
     /**
@@ -166,8 +211,15 @@ public enum GarageManager {
                     vehicle.get(licenseNumber).myEngine.getTypeOfFuel());*/
 
             if (vehicle.containsKey(licenseNumber)) {
+                //TODO: bad code
                 Engine engine = vehicle.get(licenseNumber).getEngine();
                 vehicle.get(licenseNumber).myEngine.setCurrentAmount(engine.chargingFueling(howMuch));
+
+                //TODO: good code
+                Engine engine = vehicle.get(licenseNumber).getEngine();
+                engine.chargingFueling(howMuch);
+
+
 
                 System.out.println("the vehicle type of fuel is: " + vehicle.get(licenseNumber).myEngine.getTypeOfFuel());
                 System.out.println("the new amount left is " + vehicle.get(licenseNumber).myEngine.getCurrentAmount());

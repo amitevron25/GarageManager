@@ -33,6 +33,9 @@ public class VehicleWheel {
         return maxAirPressure;
     }
 
+    //TODO: Why do you have set and add?
+    //In set function I can set million? Where is protection???
+    //TODO: I think you should delete these function.
     /**
      * @param currentAirPressure the current air pressure in the wheels
      */
