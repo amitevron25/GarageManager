@@ -27,6 +27,8 @@ abstract public class Engine {
     /**
      * @param currentAmount current amount of energy left in the vehicle
      */
+
+    //TODO: I think it's redundant function because you have chargingFueling
     public void setCurrentAmount(float currentAmount) {
         this.currentAmount = currentAmount;
     }
