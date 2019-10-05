@@ -11,6 +11,8 @@ abstract public class Vehicle {
     private final String licenseNumber;
     private final float energyLeft;
 
+    //TODO: where is getters for wheels and engine
+    //TODO: These members should be protected
     protected final ArrayList<VehicleWheel> myWheels;
     protected final Engine myEngine;
     //endregion
