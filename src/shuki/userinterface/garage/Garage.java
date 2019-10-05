@@ -1,13 +1,6 @@
 package shuki.userinterface.garage;
-import shuki.engine.engine.Engine;
-import shuki.typeofvehicles.car.Car;
-import shuki.typeofvehicles.motorcycle.Motorcycle;
-import shuki.typeofvehicles.truck.Truck;
 import shuki.vehicle.GarageManager;
 import shuki.vehicle.VehicleObjectBuilder;
-import shuki.vehicle.VehicleWheel;
-
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,12 +9,10 @@ public class Garage {
     public static void main(String[] args) {
 
         GarageManager management = GarageManager.INSTANCE;
-/*do {
 
-}while (int checkCases != -1)*/
-        int checkCases = 0;
+        int checkCases;
         System.out.println("this will keep going until you enter -1");
-        while (checkCases != -1) {
+        do {
             System.out.println("1: add new vehicle to Garage");
             System.out.println("2: print license numbers of vehicles in Garage");
             System.out.println("3: change car status of a vehicle in Garage");
@@ -40,17 +31,14 @@ public class Garage {
                 //region print license numbers
                 case 2:
                     try {
-                        int howToSort = 0;
-                        System.out.println("please enter 1 for unfiltered by car status and 2 for filtered");
+                        System.out.println("how to filter?");
+                        System.out.println("0: none");
+                        System.out.println("1: fixing");
+                        System.out.println("2: payed");
+                        System.out.println("3: fixed");
                         int howToFilter = input.nextInt();
-                        if (2 == howToFilter){
-                            System.out.println("how to sort?");
-                            System.out.println("1: fixing");
-                            System.out.println("2: payed");
-                            System.out.println("3: fixed");
-                            howToSort = input.nextInt();
-                        }
-                        management.showLicenseList(howToFilter, howToSort);
+
+                        management.showLicenseList(howToFilter);
                     }catch (InputMismatchException e){
                         System.out.println("not the correct input");
                     }
@@ -70,10 +58,8 @@ public class Garage {
                 case 4:
                     System.out.println("please enter license number to put max air pressure in");
                     String searchLicenseNumber2 = input.next();
-                    System.out.println("please enter which wheel to change");
-                    int whichWheel = input.nextInt();
 
-                    management.setsAirPressureMax(searchLicenseNumber2, whichWheel);
+                    management.setsAirPressureMax(searchLicenseNumber2);
                     break;
                 //endregion
                 //region fuel vehicle
@@ -106,6 +92,8 @@ public class Garage {
                 //endregion
             }
         }
+        while (checkCases != -1);
+
     }
 
     /**
@@ -123,7 +111,7 @@ public class Garage {
         System.out.println("please enter license number");
         String licenseNumber = in.next();
 
-        if (management.validationOfLicenseNumber(licenseNumber)){
+        if (management.validationOfLicenseNumber(licenseNumber)) {
             System.out.println("please enter owner name");
             String ownerName = in.next();
             System.out.println("please enter owner phone");
@@ -143,10 +131,41 @@ public class Garage {
             System.out.println("please enter current amount of energy in vehicle");
             float currentAmount = in.nextFloat();
 
+            Scanner input = new Scanner(System.in);
+            String licenseType = null;
+            int motorVolume = 0;
+            String carColour = null;
+            int numberOfDoors = 0;
+            int isDangerous = 0;
+            int maxPayload = 0;
+            switch (typeOfVehicle) {
+                case 1:
+                case 2:
+                    System.out.println("please enter license type");
+                    licenseType = input.next();
+                    System.out.println("please enter motor volume");
+                    motorVolume = input.nextInt();
+                    break;
+                case 3:
+                case 4:
+                    System.out.println("please enter colour of car");
+                    carColour = input.next();
+                    System.out.println("please enter number of doors");
+                    numberOfDoors = input.nextInt();
+                    break;
+                case 5:
+                    System.out.println("please enter if truck is dangerous");
+                    isDangerous = input.nextInt();
+                    System.out.println("please enter the max payload");
+                    maxPayload = input.nextInt();
+                    break;
+            }
+
             VehicleObjectBuilder objectBuilder = new VehicleObjectBuilder();
 
             management.createVehicle(typeOfVehicle, objectBuilder, licenseNumber, ownerName, ownerPhone, modelName,
-                    manufactureName, energyLeft, currentAirPressure, currentAmount);
+                    manufactureName, energyLeft, currentAirPressure, currentAmount, licenseType, motorVolume, carColour,
+                    numberOfDoors, isDangerous, maxPayload);
         }
     }
 

@@ -1,10 +1,5 @@
 package shuki.vehicle;
-import shuki.engine.electricengine.ElectricEngine;
 import shuki.engine.engine.Engine;
-import shuki.engine.fuelengine.FuelEngine;
-import shuki.typeofvehicles.car.Car;
-import shuki.typeofvehicles.motorcycle.Motorcycle;
-import shuki.typeofvehicles.truck.Truck;
 
 import java.util.*;
 
@@ -12,7 +7,14 @@ public enum GarageManager {
 
     INSTANCE;
 
-    HashMap<String, Vehicle> vehicle = new HashMap<>();
+    enum CarStatus{
+        NONE,
+        FIXING,
+        PAYED,
+        FIXED
+    }
+
+    HashMap<String, Vehicle> vehicles = new HashMap<>();
 
     /**
      *
@@ -29,28 +31,29 @@ public enum GarageManager {
      */
     public void createVehicle(int typeOfVehicle, VehicleObjectBuilder objectBuilder, String licenseNumber, String ownerName,
                               String ownerPhone, String modelName, String manufactureName, float energyLeft,
-                              float currentAirPressure, float currentAmount) {
+                              float currentAirPressure, float currentAmount, String licenseType, int motorVolume,
+                              String carColour, int numberOfDoors, int isDangerous, int maxPayload) {
 
         switch (typeOfVehicle) {
             case 1:
-                vehicle.put(licenseNumber, objectBuilder.createFuelMotorcycle(licenseNumber, ownerName, ownerPhone,
-                            modelName, manufactureName, energyLeft, currentAirPressure, currentAmount));
+                vehicles.put(licenseNumber, objectBuilder.createFuelMotorcycle(licenseNumber, ownerName, ownerPhone,
+                            modelName, manufactureName, energyLeft, currentAirPressure, currentAmount, licenseType, motorVolume));
                 break;
             case 2:
-                vehicle.put(licenseNumber, objectBuilder.createElectricMotorcycle(licenseNumber, ownerName, ownerPhone,
-                            modelName, manufactureName, energyLeft, currentAirPressure, currentAmount));
+                vehicles.put(licenseNumber, objectBuilder.createElectricMotorcycle(licenseNumber, ownerName, ownerPhone,
+                            modelName, manufactureName, energyLeft, currentAirPressure, currentAmount, licenseType, motorVolume));
                 break;
             case 3:
-                vehicle.put(licenseNumber, objectBuilder.createFuelCar(licenseNumber, ownerName, ownerPhone, modelName,
-                            manufactureName, energyLeft, currentAirPressure, currentAmount));
+                vehicles.put(licenseNumber, objectBuilder.createFuelCar(licenseNumber, ownerName, ownerPhone, modelName,
+                            manufactureName, energyLeft, currentAirPressure, currentAmount, carColour, numberOfDoors));
                 break;
             case 4:
-                vehicle.put(licenseNumber, objectBuilder.createElectricCar(licenseNumber, ownerName, ownerPhone,
-                            modelName, manufactureName, energyLeft, currentAirPressure, currentAmount));
+                vehicles.put(licenseNumber, objectBuilder.createElectricCar(licenseNumber, ownerName, ownerPhone,
+                            modelName, manufactureName, energyLeft, currentAirPressure, currentAmount, carColour, numberOfDoors));
                 break;
             case 5:
-                vehicle.put(licenseNumber, objectBuilder.createTruck(licenseNumber, ownerName, ownerPhone, modelName,
-                            manufactureName, energyLeft, currentAirPressure, currentAmount));
+                vehicles.put(licenseNumber, objectBuilder.createTruck(licenseNumber, ownerName, ownerPhone, modelName,
+                            manufactureName, energyLeft, currentAirPressure, currentAmount, isDangerous, maxPayload));
                 break;
         }
     }
@@ -61,28 +64,21 @@ public enum GarageManager {
      * output: prints to stdout license list with car status
      * @param howToFilter stores weather to filter or not
      */
-    public void showLicenseList(int howToFilter, int howToSort) {
+    public void showLicenseList(int howToFilter) {
 
-        if (1 == howToFilter) {
-            for (Map.Entry<String, Vehicle> mapElement : vehicle.entrySet()) {
-                System.out.println(mapElement.getKey() + " " + vehicle.get(mapElement.getKey()).getCarStatus());
+        for (Map.Entry<String, Vehicle> mapElement : vehicles.entrySet()) {
+            String key = vehicles.get(mapElement.getKey()).getCarStatus();
+
+            if (howToFilter == 0){
+                System.out.println(mapElement.getKey() + " " + vehicles.get(mapElement.getKey()).getCarStatus());
             }
-
-            System.out.println();
-        } else if (2 == howToFilter) {
-            for (Map.Entry<String, Vehicle> mapElement : vehicle.entrySet()) {
-                if (vehicle.get(mapElement.getKey()).getCarStatus().equals("fixing") && 1 == howToSort ) {
-                    System.out.println(mapElement.getKey() + " " + vehicle.get(mapElement.getKey()).getCarStatus());
-                }
-                if (vehicle.get(mapElement.getKey()).getCarStatus().equals("payed") && 2 == howToSort) {
-                    System.out.println(mapElement.getKey() + " " + vehicle.get(mapElement.getKey()).getCarStatus());
-                }
-                if (vehicle.get(mapElement.getKey()).getCarStatus().equals("fixed") && 3 == howToSort) {
-                    System.out.println(mapElement.getKey() + " " + vehicle.get(mapElement.getKey()).getCarStatus());
-                }
+            CarStatus status = CarStatus.valueOf(key.toUpperCase());
+            if (status.ordinal() == howToFilter){
+                System.out.println(mapElement.getKey() + " " + vehicles.get(mapElement.getKey()).getCarStatus());
             }
         }
     }
+
 
     /**
      * changes the car status to new status
@@ -92,10 +88,12 @@ public enum GarageManager {
      * @param newStatus stores the new status of the shuki.vehicle
      */
     public void changeCarStatus(String licenseNumber, String newStatus) {
-        try {
-            vehicle.get(licenseNumber).setCarStatus(newStatus);
-        } catch (NullPointerException e) {
+
+        Vehicle vehicleObj = vehicles.get(licenseNumber);
+        if (vehicleObj == null) {
             System.out.println("the license number is not in the pool and will not be changed - try again");
+        } else {
+            vehicleObj.setCarStatus(newStatus);
         }
     }
 
@@ -103,16 +101,18 @@ public enum GarageManager {
      * changes the air pressure in the wheels to max
      * input: in array list of class shuki.vehicle, the license number that needs to be changed
      * @param licenseNumber license plate number
-     * @param whichWheel indicates on which wheel to inflate
      */
-    public void setsAirPressureMax(String licenseNumber, int whichWheel) {
-        try {
-            float maxIs = vehicle.get(licenseNumber).myWheels.get(whichWheel).getMaxAirPressure();
-            vehicle.get(licenseNumber).myWheels.get(whichWheel).setCurrentAirPressure(
-                    vehicle.get(licenseNumber).myWheels.get(whichWheel).addedAirPressure(maxIs));
-            System.out.println("the new air pressure is " + vehicle.get(licenseNumber).myWheels.get(whichWheel).getCurrentAirPressure());
-        } catch (NullPointerException e){
+    public void setsAirPressureMax(String licenseNumber) {
+
+        Vehicle vehicleObj = vehicles.get(licenseNumber);
+        if (vehicleObj == null) {
             System.out.println("the license number is not in the pool and will not be changed - try again");
+            return;
+        }
+
+        for (VehicleWheel wheel : vehicleObj.myWheels) {
+            wheel.addedAirPressure(wheel.getMaxAirPressure());
+            System.out.println("the new air pressure is " + wheel.getCurrentAirPressure());
         }
     }
 
@@ -123,13 +123,14 @@ public enum GarageManager {
      * @param licenseNumber license plate number
      */
     public void printsCarSpec(String licenseNumber) {
-        try {
-            if (!vehicle.get(licenseNumber).equals(licenseNumber)){
-                System.out.println(vehicle.get(licenseNumber));
-            }
-        } catch (NullPointerException e){
+
+        Vehicle vehicleObj = vehicles.get(licenseNumber);
+        if (vehicleObj == null) {
             System.out.println("the license number is not in the garage - try again");
+            return;
         }
+
+        System.out.println(vehicles.get(licenseNumber));
     }
 
     /**
@@ -139,9 +140,9 @@ public enum GarageManager {
      */
     public boolean validationOfLicenseNumber(String licenseNumber) {
 
-        if (vehicle.containsKey(licenseNumber)) {
+        if (vehicles.containsKey(licenseNumber)) {
             System.out.println("the vehicle is already at the garage");
-            vehicle.get(licenseNumber).setCarStatus("fixing");
+            vehicles.get(licenseNumber).setCarStatus("fixing");
             return false;
         } else {
             return true;
@@ -155,22 +156,13 @@ public enum GarageManager {
      */
     public void fuelingOfCar(String licenseNumber, float howMuch) {
 
-        //TODO: why do you create a new engine instead of fuel engine of existing car
-
-
         try {
+            if (vehicles.containsKey(licenseNumber)) {
+                Engine engine = vehicles.get(licenseNumber).getMyEngine();
+                engine.chargingFueling(howMuch);
 
-/*
-            Engine engine = new FuelEngine(vehicle.get(licenseNumber).myEngine.getCurrentAmount(),
-                    vehicle.get(licenseNumber).myEngine.getMaxAmount(),
-                    vehicle.get(licenseNumber).myEngine.getTypeOfFuel());*/
-
-            if (vehicle.containsKey(licenseNumber)) {
-                Engine engine = vehicle.get(licenseNumber).getEngine();
-                vehicle.get(licenseNumber).myEngine.setCurrentAmount(engine.chargingFueling(howMuch));
-
-                System.out.println("the vehicle type of fuel is: " + vehicle.get(licenseNumber).myEngine.getTypeOfFuel());
-                System.out.println("the new amount left is " + vehicle.get(licenseNumber).myEngine.getCurrentAmount());
+                System.out.println("the vehicle type of fuel is: " + vehicles.get(licenseNumber).myEngine.getTypeOfFuel());
+                System.out.println("the new amount left is " + vehicles.get(licenseNumber).myEngine.getCurrentAmount());
                 System.out.println();
             }
         }catch (NullPointerException e){
@@ -187,25 +179,16 @@ public enum GarageManager {
      */
     public void chargingOfCar(String licenseNumber, float howMuch) {
 
-        //TODO: why do you create a new engine instead of fuel engine of existing car
-
         try {
-
-
-/*            Engine engine = new ElectricEngine(vehicle.get(licenseNumber).myEngine.getCurrentAmount(),
-                    vehicle.get(licenseNumber).myEngine.getMaxAmount(),
-                    vehicle.get(licenseNumber).myEngine.getTypeOfFuel());*/
-
-            if (vehicle.containsKey(licenseNumber)) {
-                Engine engine = vehicle.get(licenseNumber).getEngine();
-                vehicle.get(licenseNumber).myEngine.setCurrentAmount(engine.chargingFueling(howMuch));
-                System.out.println("the new amount left is " + vehicle.get(licenseNumber).myEngine.getCurrentAmount());
+            if (vehicles.containsKey(licenseNumber)) {
+                Engine engine = vehicles.get(licenseNumber).getMyEngine();
+                engine.chargingFueling(howMuch);
+                System.out.println("the new amount left is " + vehicles.get(licenseNumber).myEngine.getCurrentAmount());
                 System.out.println();
             }
         }catch (NullPointerException e){
             System.out.println("the license number is not in the garage - try again");
         }
-
     }
 }
 

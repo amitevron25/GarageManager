@@ -15,7 +15,7 @@ public class ElectricEngine extends Engine {
      * output: updates the current amount, if it accedes the max amount than the current amount is the max allowed
      * @param howMuch indication of how much to fill
      */
-    public float chargingFueling(float howMuch) {
-        return Math.min(howMuch + getCurrentAmount(), getMaxAmount());
+    public void chargingFueling(float howMuch) {
+        currentAmount = Math.min(howMuch + getCurrentAmount(), getMaxAmount());
     }
 }

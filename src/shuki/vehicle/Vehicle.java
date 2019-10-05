@@ -12,7 +12,7 @@ abstract public class Vehicle {
     private final float energyLeft;
 
     protected final ArrayList<VehicleWheel> myWheels;
-    public final Engine myEngine;
+    protected final Engine myEngine;
     //endregion
 
     //region Constructors
@@ -21,7 +21,7 @@ abstract public class Vehicle {
 
         this.ownerName      = ownerName;
         this.ownerPhone     = ownerPhone;
-        this.carStatus      = "fixing";
+        this.carStatus      = "FIXING";
         this.modelName      = modelName;
         this.licenseNumber  = licenseNumber;
         this.energyLeft     = energyLeft;
@@ -33,7 +33,7 @@ abstract public class Vehicle {
     //region Getters & Setters
     /**
      * fixing(the default), payed or paying
-     * @return the car status of the shuki.vehicle
+     * @return the car status of the vehicle
      */
     public String getCarStatus() {
         return carStatus;
@@ -82,9 +82,21 @@ abstract public class Vehicle {
         return energyLeft;
     }
 
-    public Engine getEngine(){
+    /**
+     * @return my wheels
+     */
+    public ArrayList<VehicleWheel> getMyWheels() {
+        return myWheels;
+    }
+
+    /**
+     *
+     * @return my engine
+     */
+    public Engine getMyEngine() {
         return myEngine;
     }
+
     //endregion
 
     /*

@@ -34,17 +34,10 @@ public class VehicleWheel {
     }
 
     /**
-     * @param currentAirPressure the current air pressure in the wheels
-     */
-    public void setCurrentAirPressure(float currentAirPressure) {
-        this.currentAirPressure = currentAirPressure;
-    }
-
-    /**
      * @param aAddedAirPressure new air pressure in the shuki.vehicle
      */
-    protected float addedAirPressure(float aAddedAirPressure){
-        return Math.min(maxAirPressure, aAddedAirPressure + currentAirPressure);
+    protected void addedAirPressure(float aAddedAirPressure){
+        currentAirPressure = Math.min(maxAirPressure, aAddedAirPressure + currentAirPressure);
     }
 
     /**

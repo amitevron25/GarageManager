@@ -15,7 +15,7 @@ public class FuelEngine extends Engine {
      * in case the type of fuel does not match than the right kind of fuel will be the right one
      * @param howMuch indication of how much to fill
      */
-    public float chargingFueling(float howMuch) {
-        return Math.min((howMuch + getCurrentAmount()), getMaxAmount());
+    public void chargingFueling(float howMuch) {
+        currentAmount =  Math.min((howMuch + getCurrentAmount()), getMaxAmount());
     }
 }

@@ -2,7 +2,7 @@ package shuki.engine.engine;
 
 abstract public class Engine {
     //region Private Members
-    private float currentAmount;
+    protected float currentAmount;
     private final float maxAmount;
     private final String typeOfFuel;
     //endregion
@@ -21,16 +21,9 @@ abstract public class Engine {
      * in case the type of fuel does not match than the right kind of fuel will be the right one
      * @param howMuch indication of how much to fill
      */
-    public abstract float chargingFueling(float howMuch);
+    public abstract void chargingFueling(float howMuch);
 
     //region getters setters
-    /**
-     * @param currentAmount current amount of energy left in the vehicle
-     */
-    public void setCurrentAmount(float currentAmount) {
-        this.currentAmount = currentAmount;
-    }
-
     /**
      * @return the current amount of energy currently in the vehicle
      */
@@ -68,7 +61,6 @@ abstract public class Engine {
 
         return sb.toString();
     }
-
 }
 
 
