@@ -10,12 +10,17 @@ import shuki.typeofvehicles.truck.Truck;
 import java.util.ArrayList;
 
 public class VehicleObjectBuilder {
-
+    //TODO: all functions in this class should be static functions (I want you explain me on telephone why to use static here it's the right way)
     public Motorcycle createFuelMotorcycle(String licenseNumber, String ownerName, String ownerPhone, String modelName,
                                            String manufactureName, float energyLeft, float currentAirPressure, float currentAmount,
                                            String licenseType, int motorVolume) {
         Engine engine = new FuelEngine(currentAmount, 7.2f, "Octan95");
         ArrayList<VehicleWheel> wheels = new ArrayList<>();
+
+        //TODO: I think to set this loop to separate functions will be a better solution
+        //TODO: ArrayList<VehicleWheel> createWheels(String manufactureName, float currentAirPressure, float maxAirPressure, int numberOfWheels)
+
+
         for (int i = 0; i < 2; i++) {
             wheels.add(new VehicleWheel(manufactureName, currentAirPressure, 33f, 2));
         }

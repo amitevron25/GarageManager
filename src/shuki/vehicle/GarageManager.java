@@ -7,6 +7,7 @@ public enum GarageManager {
 
     INSTANCE;
 
+    //TODO: For each class/interface/enum you should use different file, for example, CarStatus.java
     enum CarStatus{
         NONE,
         FIXING,
@@ -14,6 +15,7 @@ public enum GarageManager {
         FIXED
     }
 
+    //TODO: it can be final
     HashMap<String, Vehicle> vehicles = new HashMap<>();
 
     /**
@@ -34,6 +36,9 @@ public enum GarageManager {
                               float currentAirPressure, float currentAmount, String licenseType, int motorVolume,
                               String carColour, int numberOfDoors, int isDangerous, int maxPayload) {
 
+        //TODO: this code should be in Garage.
+        //TODO: your function signature should be
+        //TODO: addVehicle(Vehicle vehicle)
         switch (typeOfVehicle) {
             case 1:
                 vehicles.put(licenseNumber, objectBuilder.createFuelMotorcycle(licenseNumber, ownerName, ownerPhone,
@@ -55,6 +60,8 @@ public enum GarageManager {
                 vehicles.put(licenseNumber, objectBuilder.createTruck(licenseNumber, ownerName, ownerPhone, modelName,
                             manufactureName, energyLeft, currentAirPressure, currentAmount, isDangerous, maxPayload));
                 break;
+
+                //TODO: what will happen if it will be 6 for example?
         }
     }
 
@@ -65,7 +72,6 @@ public enum GarageManager {
      * @param howToFilter stores weather to filter or not
      */
     public void showLicenseList(int howToFilter) {
-
         for (Map.Entry<String, Vehicle> mapElement : vehicles.entrySet()) {
             String key = vehicles.get(mapElement.getKey()).getCarStatus();
 
@@ -77,8 +83,19 @@ public enum GarageManager {
                 System.out.println(mapElement.getKey() + " " + vehicles.get(mapElement.getKey()).getCarStatus());
             }
         }
-    }
 
+        //TODO: see more elegant solution in the next lines
+        /*public void showLicenseList(CarStatus howToFilter) {
+            for (Map.Entry<String, Vehicle> vehicle : vehicles.entrySet()) {
+                String licenseNumber = vehicle.getKey();
+                CarStatus carStatus = vehicle.getValue().getCarStatus();
+
+                if (howToFilter.equals(CarStatus.NONE) || carStatus.equals(howToFilter)){
+                    System.out.println(licenseNumber + " " + carStatus);
+                }
+            }
+        }*/
+    }
 
     /**
      * changes the car status to new status
@@ -130,7 +147,7 @@ public enum GarageManager {
             return;
         }
 
-        System.out.println(vehicles.get(licenseNumber));
+        System.out.println(vehicleObj);
     }
 
     /**
@@ -142,6 +159,8 @@ public enum GarageManager {
 
         if (vehicles.containsKey(licenseNumber)) {
             System.out.println("the vehicle is already at the garage");
+
+            //TODO: why do we need this line?
             vehicles.get(licenseNumber).setCarStatus("fixing");
             return false;
         } else {
@@ -154,6 +173,8 @@ public enum GarageManager {
      * @param licenseNumber receive a license number to match
      * @param howMuch receive the input of how much to fuel
      */
+
+    //TODO: why is it the same code in two different functions???
     public void fuelingOfCar(String licenseNumber, float howMuch) {
 
         try {
@@ -165,6 +186,8 @@ public enum GarageManager {
                 System.out.println("the new amount left is " + vehicles.get(licenseNumber).myEngine.getCurrentAmount());
                 System.out.println();
             }
+
+            //TODO: why do we need this extra catch?
         }catch (NullPointerException e){
             System.out.println("the license number is not in the garage - try again");
         }

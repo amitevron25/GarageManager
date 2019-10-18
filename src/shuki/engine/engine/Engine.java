@@ -1,5 +1,6 @@
 package shuki.engine.engine;
 
+//TODO: do you know what does it mean, when you don't declare access level (public/private/protected)?
 abstract public class Engine {
     //region Private Members
     protected float currentAmount;
@@ -9,7 +10,7 @@ abstract public class Engine {
 
     //region constructor
     protected Engine(float currentAmount, float maxAmount, String typeOfFuel) {
-        this.maxAmount = maxAmount;
+        this.maxAmount = maxAmount; //TODO: what will happen if somebody will set maxAmount to -10 or 0?
         this.typeOfFuel = typeOfFuel;
         this.currentAmount = currentAmount;
     }

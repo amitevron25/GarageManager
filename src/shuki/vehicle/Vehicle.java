@@ -1,6 +1,8 @@
 package shuki.vehicle;
 import shuki.engine.engine.Engine;
 import java.util.ArrayList;
+
+//TODO: do you know what does it mean, when you don't declare access level (public/private/protected)?
 abstract public class Vehicle {
 
     //region Private Members
@@ -11,6 +13,9 @@ abstract public class Vehicle {
     private final String licenseNumber;
     private final float energyLeft;
 
+    //TODO: why are two these properties protected?
+    //TODO: Remember. In Object Oriented languages set all properties/functions to private and then change to protected
+    //TODO or public ONLY what you really need.
     protected final ArrayList<VehicleWheel> myWheels;
     protected final Engine myEngine;
     //endregion
@@ -35,6 +40,7 @@ abstract public class Vehicle {
      * fixing(the default), payed or paying
      * @return the car status of the vehicle
      */
+    //TODO: it should be ENUM - CarStatus
     public String getCarStatus() {
         return carStatus;
     }
